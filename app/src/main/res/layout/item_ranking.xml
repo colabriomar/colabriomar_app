@@ -3,9 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="8dp"
     android:layout_margin="8dp">
 
-    <!-- Posição -->
+    <!-- Imagem de perfil -->
+    <ImageView
+        android:id="@+id/ivProfilePictureRanking"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/circulo_background"
+        android:contentDescription="Foto do perfil do ranking"
+        android:src="@drawable/perfil_photo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvPosition"
+        android:layout_marginEnd="8dp"
+        android:elevation="4dp" />
+
+    <!-- Posicao (ranking) -->
     <TextView
         android:id="@+id/tvPosition"
         android:layout_width="wrap_content"
@@ -13,11 +29,12 @@
         android:text="1"
         android:textColor="@android:color/white"
         android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/ivProfilePictureRanking"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="8dp" />
 
-    <!-- Nome -->
+    <!-- Nome do usuario -->
     <TextView
         android:id="@+id/tvName"
         android:layout_width="0dp"
@@ -31,10 +48,10 @@
         app:layout_constraintEnd_toStartOf="@id/tvScore"
         android:layout_marginStart="16dp" />
 
-    <!-- Troféus -->
+    <!-- Pontuação (trofeus) -->
     <TextView
         android:id="@+id/tvScore"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:background="@drawable/score_background"
         android:gravity="center"
@@ -45,4 +62,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="8dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,46 +6,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main"
-    tools:context=".telaprincipal.SettingsActivity"
+    tools:context=".logicadeinterface.SettingsActivity"
     android:background="@color/azul_escuro">
 
-
-    <!-- Campo para nome -->
-    <EditText
-        android:id="@+id/etWelcomeName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="48dp"
-        android:layout_toStartOf="@+id/btnConfirmName"
-        android:layout_alignBaseline="@+id/btnConfirmName"
-        android:fontFamily="sans-serif-medium"
-        android:hint="Nome"
-        android:textColor="@color/laranja"
-        android:textColorHint="@color/laranja"
-        android:textSize="24sp"
-        android:background="@android:color/transparent"
-        android:paddingEnd="8dp" />
-
-    <!-- Botão para confirmar o nome -->
-
-    <!-- Barra de busca -->
-
-    <Button
-        android:id="@+id/btnConfirmName"
+    <!-- Texto de boas-vindas -->
+    <TextView
+        android:id="@+id/tvWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Olá, Pessoa!"
+        android:textColor="@color/laranja"
+        android:textSize="24sp" />
+
+    <!-- Foto de perfil -->
+    <ImageView
+        android:id="@+id/ivProfilePicture"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="45dp"
-        android:layout_marginEnd="52dp"
-        android:backgroundTint="@color/laranja"
-        android:fontFamily="sans-serif-medium"
-        android:padding="8dp"
-        android:text="OK"
-        android:textColor="@android:color/white" />
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="56dp"
+        android:background="@drawable/circulo_background"
+        android:contentDescription="Foto do perfil"
+        android:src="@drawable/perfil_photo" />
 
+    <!-- Barra de busca -->
     <EditText
         android:id="@+id/etSearchSettings"
         android:layout_width="0dp"
@@ -66,7 +57,6 @@
         android:inputType="text"
         android:paddingHorizontal="15dp"
         android:textSize="12sp" />
-
 
     <FrameLayout
         android:id="@+id/llEditInfo"
@@ -120,18 +110,19 @@
             android:textColor="@color/white"
             android:fontFamily="@font/montserrat_light"
             android:textSize="12sp"
-            android:drawableStart="@drawable/ic_modotheme"
             android:drawablePadding="12dp"
             android:gravity="center_vertical|start"
             android:paddingStart="15dp"
-            android:paddingEnd="15dp" />
+            android:paddingEnd="15dp"
+            app:drawableStartCompat="@drawable/ic_modotheme" />
 
         <Switch
             android:id="@+id/switchDarkMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
     </FrameLayout>
 
 

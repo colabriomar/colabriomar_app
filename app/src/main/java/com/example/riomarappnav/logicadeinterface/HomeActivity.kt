@@ -1,4 +1,4 @@
-package com.example.riomarappnav.telaprincipal
+package com.example.riomarappnav.logicadeinterface
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.riomarappnav.R
-import com.example.riomarappnav.telaprincipal.camerapred.CameraActivity
-import com.example.riomarappnav.telaprincipal.telaRanking.RankingActivity
+import com.example.riomarappnav.logicadeinterface.camerapred.CameraActivity
+import com.example.riomarappnav.logicadeinterface.telaRanking.RankingActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 @Suppress("DEPRECATION")

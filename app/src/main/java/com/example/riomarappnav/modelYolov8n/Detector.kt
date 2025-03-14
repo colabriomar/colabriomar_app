@@ -113,7 +113,8 @@ class Detector(
     }
 
     // essa funcao cria as caixas delimitadoras para cada objeto
-    private fun bestBox(array: FloatArray) : List<BoundingBox>? { //Espera a entrada do modelo, contendo as caixas e probabilidade de cada classe prevista, e retorna a lista de caixas delimitadoras
+    private fun bestBox(array: FloatArray) : List<BoundingBox>? {
+        //Espera a entrada do modelo, contendo as caixas e probabilidade de cada classe prevista, e retorna a lista de caixas delimitadoras
 
         val boundingBoxes = mutableListOf<BoundingBox>() //lista de caixas delimitadoras
 
@@ -135,8 +136,8 @@ class Detector(
             if (maxConf > CONFIDENCE_THRESHOLD) { //filtro de confiança, ignora detecoes com baixa confiança
                 //calculo das Coordenadas da caixa
                 val clsName = labels[maxIdx]
-                val cx = array[c] // 0
-                val cy = array[c + numElements] // 1
+                val cx = array[c]
+                val cy = array[c + numElements]
                 val w = array[c + numElements * 2]
                 val h = array[c + numElements * 3]
                 val x1 = cx - (w/2F)

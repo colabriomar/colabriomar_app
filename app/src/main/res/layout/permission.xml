@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/azul_escuro"
+    tools:context=".logicadeinterface.PermissionActivity">
+
+    <!-- Título da tela -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Gerenciar Permissões"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/laranja"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Card para permissão de Localização -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@color/background_night">
+
+            <!-- Ícone de localização -->
+            <ImageView
+                android:id="@+id/ivLocation"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_permissoes"
+                android:contentDescription="Ícone de Localização"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"/>
+
+            <!-- Descrição da permissão -->
+            <TextView
+                android:id="@+id/tvLocationDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Permissão de Localização"
+                android:textColor="@color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_toEndOf="@id/ivLocation"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"/>
+
+            <!-- Switch para ativar/desativar a permissão de localização -->
+            <Switch
+                android:id="@+id/switchLocationPermission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Card para permissão de Câmera -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardCamera"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/cardLocation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@color/background_night"
+            >
+
+            <!-- Ícone de câmera -->
+            <ImageView
+                android:id="@+id/ivCamera"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_searchlupa"
+                android:contentDescription="Ícone de Câmera"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"/>
+
+            <!-- Descrição da permissão -->
+            <TextView
+                android:id="@+id/tvCameraDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Permissão de Câmera"
+                android:textColor="@color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_toEndOf="@id/ivCamera"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"/>
+
+            <!-- Switch para ativar/desativar a permissão de câmera -->
+            <Switch
+                android:id="@+id/switchCameraPermission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.riomarappnav.telaprincipal.telaRanking
+package com.example.riomarappnav.logicadeinterface.telaRanking
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.riomarappnav.R
 import com.example.riomarappnav.database.FirestoreRepository
-import com.example.riomarappnav.telaprincipal.HomeActivity
-import com.example.riomarappnav.telaprincipal.SettingsActivity
-import com.example.riomarappnav.telaprincipal.camerapred.CameraActivity
+import com.example.riomarappnav.logicadeinterface.HomeActivity
+import com.example.riomarappnav.logicadeinterface.SettingsActivity
+import com.example.riomarappnav.logicadeinterface.camerapred.CameraActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main"
-    tools:context=".telaprincipal.camerapred.CameraActivity"
+    tools:context=".logicadeinterface.camerapred.CameraActivity"
     android:background="@color/azul_escuro">
 
     <!-- Preview da câmera -->
@@ -16,6 +16,11 @@
         android:layout_height="match_parent" >
     </androidx.camera.view.PreviewView>
 
+    <com.example.riomarappnav.modelYolov8n.OverlayView
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:translationZ="5dp" />
     <!-- Botão para tirar foto -->
 
     <ImageButton
@@ -36,10 +41,10 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/bottom_background"
         android:elevation="2dp"
         app:itemIconSize="25dp"

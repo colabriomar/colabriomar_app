@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".logicadeinterface.AboutActivity"
+    android:background="@color/azul_escuro">
+
+    <!-- Toolbar para a ação de voltar ou título da tela -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/laranja"
+        app:title="Sobre"
+        app:titleTextColor="@android:color/white" />
+
+    <!-- Texto centralizado com informações do projeto -->
+    <TextView
+        android:id="@+id/tvAbout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="Projeto Riomar: os alunos do IFAM contribuem para o monitoramento do lixo, promovendo a sustentabilidade e a preservação ambiental."
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

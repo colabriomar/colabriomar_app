@@ -7,11 +7,12 @@ plugins {
 
 android {
     namespace = "com.example.riomarappnav"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.riomarappnav"
         minSdk = 24
+        //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -61,6 +62,9 @@ dependencies {
     implementation(libs.play.services.vision.common)
     implementation(libs.firebase.database)
     implementation(libs.firebase.firestore)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.firebase.storage)
     annotationProcessor(libs.compiler)
 
     // Import the BoM for the Firebase platform

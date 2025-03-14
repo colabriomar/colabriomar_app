@@ -1,4 +1,4 @@
-package com.example.riomarappnav.trophiesgenerator
+package com.example.riomarappnav.utils
 
 import com.example.riomarappnav.database.FirestoreRepository
 
@@ -8,7 +8,6 @@ class TrophyGenerator(private val firestoreRepository: FirestoreRepository) {
     fun gerenciarTrofeus(nomeUser: String, listasDeClasses: List<String>, onResult: (Boolean) -> Unit) {
         firestoreRepository.verificarDocumentoUsuario { existe ->
             if (existe) {
-                // Se o documento existe, incrementa os troféus
                 val novosTrofeus = listasDeClasses.size * constanteTrofeus
                 firestoreRepository.incrementarTrofeus(novosTrofeus) { sucesso ->
                     onResult(sucesso)
@@ -23,13 +22,12 @@ class TrophyGenerator(private val firestoreRepository: FirestoreRepository) {
                             onResult(sucesso)
                         }
                     } else {
-                        onResult(false) // Falha ao criar o documento inicial
+                        onResult(false)
                     }
                 }
             }
         }
     }
-
 }
 
 
