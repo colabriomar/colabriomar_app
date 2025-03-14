@@ -63,8 +63,8 @@ class CameraActivity : AppCompatActivity(), Detector.DetectorListener {
     private lateinit var longi: Number
     private lateinit var lati: Number
 
-    //a localizacao parece funcionar corretamente no celular, entao ve somente se nao estao sendo passados numeros nulos pro firebase
-    //refatorar essa bomba ai pae
+    // Flag para indicar se a Activity está ativa (para evitar processamento em background)
+    private var isActive: Boolean = true
 
     @SuppressLint("MissingPermission", "NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,7 +86,6 @@ class CameraActivity : AppCompatActivity(), Detector.DetectorListener {
                     Manifest.permission.ACCESS_COARSE_LOCATION, false
                 ) -> {
                     Toast.makeText(this, "acesso a localizacao permitido", Toast.LENGTH_LONG).show()
-
                     if (isLocationEnabled()) {
                         val result = fusedLocationClient.getCurrentLocation(
                             Priority.PRIORITY_BALANCED_POWER_ACCURACY,
@@ -100,7 +99,7 @@ class CameraActivity : AppCompatActivity(), Detector.DetectorListener {
                                 longi = it.result.longitude
                             } else {
                                 Toast.makeText(this, "Falha ao obter a localização", Toast.LENGTH_LONG).show()
-                                // Atribuindo valores padrão
+                                // Valores padrão para localização
                                 lati = 0.0
                                 longi = 0.0
                             }
@@ -157,7 +156,7 @@ class CameraActivity : AppCompatActivity(), Detector.DetectorListener {
                 else -> false
             }
         }
-        // Inicializa a câmera
+        // Inicializa a câmera e o executor
         cameraExecutor = Executors.newSingleThreadExecutor()
         startCamera()
 
@@ -173,6 +172,28 @@ class CameraActivity : AppCompatActivity(), Detector.DetectorListener {
         }
     }
 
+    // Reinicializa recursos quando a Activity voltar ao primeiro plano
+    override fun onResume() {
+        super.onResume()
+        // Reativa o processamento de imagens
+        isActive = true
+        // Se o executor foi encerrado, reinitialize-o
+        if (cameraExecutor.isShutdown) {
+            cameraExecutor = Executors.newSingleThreadExecutor()
+        }
+        // Reinicia a câmera
+        startCamera()
+    }
+
+    // Pausa o processamento quando a Activity não estiver em primeiro plano
+    override fun onPause() {
+        super.onPause()
+        // Evita processamento desnecessário em background
+        isActive = false
+        // Cancela tarefas pendentes
+        cameraExecutor.shutdownNow()
+    }
+
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener({
@@ -185,6 +206,7 @@ class CameraActivity : AppCompatActivity(), Detector.DetectorListener {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
 
+            // Define o analisador de imagens utilizando o executor configurado
             imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
                 processImage(imageProxy)
             }
@@ -200,18 +222,38 @@ class CameraActivity : AppCompatActivity(), Detector.DetectorListener {
         }, ContextCompat.getMainExecutor(this))
     }
 
+    // processImage: Gerencia o processamento da imagem, tratando exceções e liberando recursos.
     private fun processImage(imageProxy: ImageProxy) {
-        val bitmap = imageProxy.toBitmap() // Função de extensão para converter ImageProxy para Bitmap
+        // Se a Activity não estiver ativa, encerra a imageProxy e retorna
+        if (!isActive) {
+            imageProxy.close()
+            return
+        }
+        // Converte o ImageProxy para Bitmap (certifique-se que a função de extensão lida com erros internos)
+        val bitmap = imageProxy.toBitmap()
+        // Cria um Bitmap rotacionado de acordo com a rotação da imagem
         val rotatedBitmap = Bitmap.createBitmap(
             bitmap, 0, 0, bitmap.width, bitmap.height,
             imageProxy.imageInfo.rotationDegrees.toMatrix(), true
         )
-        try{
+        try {
+            // Chamada encapsulada em try-catch para evitar crash se ocorrer exceção durante a inferência
             detector.detect(rotatedBitmap)
         } catch (e: Exception) {
             Log.e("CameraActivity", "Erro ao processar a imagem: ${e.message}")
+        } finally {
+            // Gerenciamento de memória:
+            // Se você encontrar problemas com bitmap.recycle() (por exemplo, se o bitmap estiver em uso por operações assíncronas),
+            // considere remover a chamada e deixar o garbage collector liberar a memória.
+            if (!bitmap.isRecycled) {
+                bitmap.recycle()
+            }
+            if (!rotatedBitmap.isRecycled) {
+                rotatedBitmap.recycle()
+            }
+            // Garante que o imageProxy seja fechado para liberar recursos
+            imageProxy.close()
         }
-        imageProxy.close()
     }
 
     // Extensão para converter graus em Matrix para rotação da imagem
@@ -221,8 +263,13 @@ class CameraActivity : AppCompatActivity(), Detector.DetectorListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        // Indica que a Activity não está ativa para evitar processamento extra
+        isActive = false
         detector.clear()
-        cameraExecutor.shutdown()
+        // Se o executor ainda não estiver encerrado, encerre-o
+        if (!cameraExecutor.isShutdown) {
+            cameraExecutor.shutdownNow()
+        }
     }
 
     override fun onEmptyDetect() {
