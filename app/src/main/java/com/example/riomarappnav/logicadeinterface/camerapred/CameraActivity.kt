@@ -33,6 +33,7 @@ import com.example.riomarappnav.modelYolov8n.Constants.LABELS_PATH
 import com.example.riomarappnav.modelYolov8n.Constants.MODEL_PATH
 import com.example.riomarappnav.modelYolov8n.Detector
 import com.example.riomarappnav.modelYolov8n.OverlayView
+import com.example.riomarappnav.utils.BaseActivity
 import com.example.riomarappnav.utils.TrophyGenerator
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -47,7 +48,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @Suppress("DEPRECATION")
-class CameraActivity : AppCompatActivity(), Detector.DetectorListener {
+class CameraActivity : BaseActivity(), Detector.DetectorListener {
 
     private lateinit var binding: ActivityCameraBinding
     private lateinit var previewView: PreviewView

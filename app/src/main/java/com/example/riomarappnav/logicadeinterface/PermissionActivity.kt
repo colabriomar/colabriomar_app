@@ -12,9 +12,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.riomarappnav.R
+import com.example.riomarappnav.utils.BaseActivity
 
 @SuppressLint("UseSwitchCompatOrMaterialCode")
-class PermissionActivity : AppCompatActivity() {
+class PermissionActivity : BaseActivity() {
 
     private lateinit var switchLocationPermission: Switch
     private lateinit var switchCameraPermission: Switch

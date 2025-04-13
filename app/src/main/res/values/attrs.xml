@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="containerColor" format="color" />
+    <!-- Atributo para a cor quando o item estiver selecionado -->
+    <attr name="selectorTrueColor" format="color" />
+    <!-- Atributo para a cor quando o item não estiver selecionado -->
+    <attr name="selectorFalseColor" format="color" />
+
+    <attr name="cardBackgroundColor" format="color" />
+</resources>

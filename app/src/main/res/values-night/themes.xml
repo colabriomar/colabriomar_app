@@ -1,7 +1,46 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.RioMarAppNav" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Estilo base (modo escuro) -->
+    <style name="Base.Theme.RioMarAppNav.Dark" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Você PODE usar outro parent, como Theme.MaterialComponents if you like -->
+        <item name="colorPrimary">@color/container_dark_night_gray</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+
+        <!-- Atributos customizados -->
+        <item name="containerColor">@color/container_dark_night_gray</item>
+        <item name="cardBackgroundColor">@color/container_dark_night_gray</item>
+        <item name="selectorFalseColor">@color/item_selector_dark_night_gray</item>
     </style>
+
+    <!-- Tema escuro final -->
+    <style name="Theme.RioMarAppNav.Dark" parent="Base.Theme.RioMarAppNav.Dark">
+        <!-- Sobrescreva algo se quiser -->
+    </style>
+
+    <!-- Outros estilos modo escuro -->
+    <style name="BACKGROUND">
+        <item name="android:background">@color/background_dark_azul_escuro</item>
+    </style>
+
+    <style name="TEXTCOLOR">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TEXTCOLORBIG">
+        <item name="android:backgroundTint">@color/laranja</item>
+    </style>
+
+    <style name="BUTTON">
+        <item name="android:backgroundTint">@color/laranja</item>
+    </style>
+
+    <style name="CONTAINER">
+        <item name="android:color">@color/container_dark_night_gray</item>
+    </style>
+
+    <style name="PERMISSION_COLOR">
+        <item name="android:background">@color/container_dark_night_gray</item>
+    </style>
+
 </resources>

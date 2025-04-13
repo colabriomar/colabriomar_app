@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main"
-    android:background="@color/azul_escuro"
+    style="@style/BACKGROUND"
     tools:context=".MainActivity">
 
     <ImageView
@@ -36,7 +36,7 @@
         android:gravity="center"
         android:text="RIO MAR"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        style="@style/TEXTCOLOR"
         android:textSize="32sp"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -52,7 +52,7 @@
         android:layout_marginEnd="83dp"
         android:fontFamily="@font/montserrat_light"
         android:text="Collab"
-        android:textColor="@color/white"
+        style="@style/TEXTCOLORBIG"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent" />
 

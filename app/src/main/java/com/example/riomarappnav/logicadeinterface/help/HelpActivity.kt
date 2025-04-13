@@ -7,8 +7,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.riomarappnav.databinding.ActivityHelpBinding
+import com.example.riomarappnav.utils.BaseActivity
 
-class HelpActivity : AppCompatActivity() {
+class HelpActivity : BaseActivity() {
 
     private lateinit var binding: ActivityHelpBinding
     private var attachedImageUri: Uri? = null

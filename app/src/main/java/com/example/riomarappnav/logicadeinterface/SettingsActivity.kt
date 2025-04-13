@@ -12,7 +12,6 @@ import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.riomarappnav.R
@@ -23,8 +22,6 @@ import com.example.riomarappnav.logicadeinterface.editInfo.EditInfoActivity
 import com.example.riomarappnav.logicadeinterface.help.HelpActivity
 import com.example.riomarappnav.logicadeinterface.telaRanking.RankingActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
 class SettingsActivity : AppCompatActivity() {
@@ -34,7 +31,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var ivProfilePicture: ImageView
     private lateinit var firestoreRepository: FirestoreRepository
 
-    // Em outra parte do código, se o nome já estiver salvo, você pode recuperá-lo:
+    // Exemplo para salvar localmente o nome do usuário
     private fun recuperarNomeLocal(): String? {
         val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
         return sharedPreferences.getString("usuario_nome", null)
@@ -42,28 +39,41 @@ class SettingsActivity : AppCompatActivity() {
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        // 1) Instancia o ThemePreferenceManager (SharedPreferences)
+        themeManager = ThemePreferenceManager(this)
+
+        // 2) Lê se o usuário forçou modo escuro
+        val isDarkMode = themeManager.isDarkModeForced
+
+        // 3) Aplica o tema antes de inflar o layout
+        if (isDarkMode) {
+            setTheme(R.style.Theme_RioMarAppNav_Dark)  // tema escuro
+        } else {
+            setTheme(R.style.Theme_RioMarAppNav)       // tema claro
+        }
+
+        // Agora inflamos o layout
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        themeManager = ThemePreferenceManager(this)
         firestoreRepository = FirestoreRepository()
 
-        // Atualiza e salva o nome recuperado do Firestore
+        // Exemplo: atualiza o nome do usuário do Firestore
         firestoreRepository.buscarNomeUsuario { nome ->
-            // Atualiza a UI
             tvWelcome.text = "Olá, ${nome ?: "usuário"}!"
-
-            // Salva nas SharedPreferences para uso futuro
-            val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE).edit()
-            sharedPreferences.putString("usuario_nome", nome)
-            sharedPreferences.apply()
+            val sp = getSharedPreferences("AppPreferences", MODE_PRIVATE).edit()
+            sp.putString("usuario_nome", nome)
+            sp.apply()
         }
 
+        // Referências das views
         val darkModeSwitch = findViewById<Switch>(R.id.switchDarkMode)
         tvWelcome = findViewById(R.id.tvWelcome)
         tvWelcome.text = "Olá, ${recuperarNomeLocal()}!"
         ivProfilePicture = findViewById(R.id.ivProfilePicture)
 
+        // Carrega imagem de perfil
         firestoreRepository.buscarImagemUsuario { profileImageUrl ->
             Glide.with(this)
                 .load(profileImageUrl)
@@ -71,6 +81,7 @@ class SettingsActivity : AppCompatActivity() {
                 .into(ivProfilePicture)
         }
 
+        // BottomNavigation
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNavigationView.selectedItemId = R.id.bottom_profile
         bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
@@ -98,10 +109,11 @@ class SettingsActivity : AppCompatActivity() {
             false
         }
 
+        // Exemplo de busca configurável
         val etSearchSettings = findViewById<EditText>(R.id.etSearchSettings)
         etSearchSettings.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString().lowercase()
                 if (query.isEmpty()) {
@@ -125,23 +137,16 @@ class SettingsActivity : AppCompatActivity() {
             }
         })
 
-        lifecycleScope.launch {
-            val isDarkMode = themeManager.isDarkModeEnabled.first() ?: false
-            darkModeSwitch.isChecked = isDarkMode
+        // Ajusta o estado do switch de acordo com SharedPreferences
+        darkModeSwitch.isChecked = isDarkMode
+
+        // Quando o usuário alterna, salvamos e recriamos a Activity
+        darkModeSwitch.setOnCheckedChangeListener { _, checked ->
+            themeManager.setDarkMode(checked)
+            recreate()
         }
 
-        darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            lifecycleScope.launch {
-                themeManager.setDarkMode(isChecked)
-                etSearchSettings.setText("")
-                // Reinicia a Activity sem animacoes para evitar flickering
-                overridePendingTransition(0, 0)
-                finish()
-                startActivity(intent)
-                overridePendingTransition(0, 0)
-            }
-        }
-
+        // Click listeners
         findViewById<View>(R.id.llEditInfo).setOnClickListener {
             startActivity(Intent(this, EditInfoActivity::class.java))
         }
@@ -158,7 +163,4 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this, HelpActivity::class.java))
         }
     }
-
 }
-
-

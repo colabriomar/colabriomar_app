@@ -1,23 +1,29 @@
 package com.example.riomarappnav
 
 import android.content.Context
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-
-private val Context.dataStore by preferencesDataStore(name = "theme_preferences")
+import androidx.appcompat.app.AppCompatDelegate
 
 class ThemePreferenceManager(private val context: Context) {
-    private val THEME_KEY = booleanPreferencesKey("dark_mode_enabled")
 
-    val isDarkModeEnabled: Flow<Boolean?> = context.dataStore.data
-        .map { preferences -> preferences[THEME_KEY] }
+    // Vamos usar um SharedPreferences chamado "ThemePrefs"
+    private val sharedPrefs = context.getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
 
-    suspend fun setDarkMode(enabled: Boolean) {
-        context.dataStore.edit { preferences ->
-            preferences[THEME_KEY] = enabled
+    // Lê se o usuário forçou modo escuro
+    val isDarkModeForced: Boolean
+        get() = sharedPrefs.getBoolean("force_dark_mode", false)
+
+    // Ajusta o modo escuro ou claro no SharedPreferences
+    // Perceba que NÃO é uma função "suspend"
+    fun setDarkMode(forceDark: Boolean) {
+        sharedPrefs.edit().putBoolean("force_dark_mode", forceDark).apply()
+
+        // Se você quiser alinhar com o AppCompatDelegate, use:
+        if (forceDark) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            // Se preferir que quando não for dark siga o sistema, troque para MODE_NIGHT_FOLLOW_SYSTEM
+            // Se quiser sempre claro, use MODE_NIGHT_NO
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 }

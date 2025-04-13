@@ -3,15 +3,17 @@ package com.example.riomarappnav.logicadeinterface
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.riomarappnav.R
 import com.example.riomarappnav.logicadeinterface.camerapred.CameraActivity
 import com.example.riomarappnav.logicadeinterface.telaRanking.RankingActivity
+import com.example.riomarappnav.utils.BaseActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 @Suppress("DEPRECATION")
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)

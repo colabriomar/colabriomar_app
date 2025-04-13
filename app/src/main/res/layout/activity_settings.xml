@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:id="@+id/main"
     tools:context=".logicadeinterface.SettingsActivity"
-    android:background="@color/azul_escuro">
+    style="@style/BACKGROUND">
 
     <!-- Texto de boas-vindas -->
     <TextView

@@ -7,8 +7,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.riomarappnav.database.FirestoreRepository
 import com.example.riomarappnav.databinding.ActivityEditInfoBinding
+import com.example.riomarappnav.utils.BaseActivity
 
-class EditInfoActivity : AppCompatActivity() {
+class EditInfoActivity : BaseActivity() {
 
     private lateinit var binding: ActivityEditInfoBinding
     private lateinit var firestoreRepository: FirestoreRepository

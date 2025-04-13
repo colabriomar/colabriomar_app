@@ -1,10 +1,10 @@
 package com.example.riomarappnav.logicadeinterface
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.example.riomarappnav.databinding.ActivityAboutBinding
+import com.example.riomarappnav.utils.BaseActivity
 
-class AboutActivity : AppCompatActivity() {
+class AboutActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAboutBinding
 
@@ -13,7 +13,5 @@ class AboutActivity : AppCompatActivity() {
 
         binding = ActivityAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        setSupportActionBar(binding.toolbar)
     }
 }

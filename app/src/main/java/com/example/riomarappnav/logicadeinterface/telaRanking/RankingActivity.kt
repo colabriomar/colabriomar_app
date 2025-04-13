@@ -12,11 +12,12 @@ import com.example.riomarappnav.database.FirestoreRepository
 import com.example.riomarappnav.logicadeinterface.HomeActivity
 import com.example.riomarappnav.logicadeinterface.SettingsActivity
 import com.example.riomarappnav.logicadeinterface.camerapred.CameraActivity
+import com.example.riomarappnav.utils.BaseActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 @Suppress("DEPRECATION")
-class RankingActivity : AppCompatActivity() {
+class RankingActivity : BaseActivity() {
     private lateinit var rankingAdapter: RankingAdapter
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {

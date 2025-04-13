@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:id="@+id/main"
     tools:context=".logicadeinterface.HomeActivity"
-    android:background="@color/azul_escuro"
+    style="@style/BACKGROUND"
     >
 
         <!-- Logo -->
@@ -40,7 +40,7 @@
         android:fontFamily="@font/montserrat"
         android:text="Bem-vindo!"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        style="@style/TEXTCOLOR"
         android:textSize="24sp" />
 
     <TextView
@@ -57,7 +57,7 @@
         android:fontFamily="@font/montserrat_light"
         android:text="Explore e colabore com a Plataforma Colaborativa de Monitoramento de Objetos Plásticos. Este aplicativo georreferenciado permite que você registre ocorrências de poluição plástica utilizando seu celular."
         android:textAlignment="center"
-        android:textColor="@color/white"
+        style="@style/TEXTCOLOR"
         android:textSize="16sp"
         android:padding="8dp"/>
 

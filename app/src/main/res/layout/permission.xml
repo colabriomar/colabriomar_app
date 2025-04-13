@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@color/azul_escuro"
+    style="@style/BACKGROUND"
     tools:context=".logicadeinterface.PermissionActivity">
 
     <!-- Título da tela -->
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:background="@color/background_night">
+            style="@style/PERMISSION_COLOR">
 
             <!-- Ícone de localização -->
             <ImageView
@@ -96,7 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:background="@color/background_night"
+            style="@style/PERMISSION_COLOR"
             >
 
             <!-- Ícone de câmera -->
