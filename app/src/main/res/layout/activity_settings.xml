@@ -9,7 +9,6 @@
     tools:context=".logicadeinterface.SettingsActivity"
     style="@style/BACKGROUND">
 
-    <!-- Texto de boas-vindas -->
     <TextView
         android:id="@+id/tvWelcome"
         android:layout_width="wrap_content"
@@ -23,20 +22,6 @@
         android:textColor="@color/laranja"
         android:textSize="24sp" />
 
-    <!-- Foto de perfil -->
-    <ImageView
-        android:id="@+id/ivProfilePicture"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="27dp"
-        android:layout_marginEnd="56dp"
-        android:background="@drawable/circulo_background"
-        android:contentDescription="Foto do perfil"
-        android:src="@drawable/perfil_photo" />
-
-    <!-- Barra de busca -->
     <EditText
         android:id="@+id/etSearchSettings"
         android:layout_width="0dp"
@@ -200,7 +185,6 @@
         android:clickable="true"
         android:focusable="true">
 
-        <!-- Texto que será exibido -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

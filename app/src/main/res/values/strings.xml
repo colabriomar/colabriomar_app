@@ -18,6 +18,7 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="welcome_user">Olá, %1$s!</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -55,4 +56,13 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="salvar">Salvar</string>
+    <string name="digite_seu_nome">Digite seu nome</string>
+    <string name="projeto_riomar_os_alunos_do_ifam_contribuem_para_o_monitoramento_do_lixo_promovendo_a_sustentabilidade_e_a_preserva_o_ambiental">Projeto Riomar: os alunos do IFAM contribuem para o monitoramento do lixo, promovendo a sustentabilidade e a preservação ambiental.</string>
+    <string name="imagem_de_uma_paisagem_com_a_logo_do_collba_rio_mar">Imagem de uma paisagem com a logo do collba rio mar</string>
+    <string name="bem_vindo">Bem-vindo!</string>
+    <string name="explore_e_colabore_com_a_plataforma_colaborativa_de_monitoramento_de_objetos_pl_sticos_este_aplicativo_georreferenciado_permite_que_voc_registre_ocorr_ncias_de_polui_o_pl_stica_utilizando_seu_celular">Explore e colabore com a Plataforma Colaborativa de Monitoramento de Objetos Plásticos. Este aplicativo georreferenciado permite que você registre ocorrências de poluição plástica utilizando seu celular.</string>
+    <string name="ranking_de_usu_rios">Ranking de Usuários</string>
+    <string name="numero_do_contador_do_ranking">1</string>
+    <string name="usuario_string_ranking_item">Usuário</string>
 </resources>

@@ -11,7 +11,6 @@ import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
 
-@Suppress("DEPRECATION")
 class FirestoreRepository {
 
     private val db = FirebaseFirestore.getInstance()

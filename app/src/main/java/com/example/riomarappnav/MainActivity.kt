@@ -1,14 +1,11 @@
 package com.example.riomarappnav
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat.startActivity
-import com.example.riomarappnav.login.RegisterActivity
 import com.example.riomarappnav.logicadeinterface.HomeActivity
+import com.example.riomarappnav.login.RegisterActivity
 import com.example.riomarappnav.utils.BaseActivity
 import com.google.firebase.auth.FirebaseAuth
 

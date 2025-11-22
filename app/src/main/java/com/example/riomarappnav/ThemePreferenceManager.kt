@@ -2,8 +2,9 @@ package com.example.riomarappnav
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 
-class ThemePreferenceManager(private val context: Context) {
+class ThemePreferenceManager(context: Context) {
 
     // Vamos usar um SharedPreferences chamado "ThemePrefs"
     private val sharedPrefs = context.getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
@@ -15,7 +16,7 @@ class ThemePreferenceManager(private val context: Context) {
     // Ajusta o modo escuro ou claro no SharedPreferences
     // Perceba que NÃO é uma função "suspend"
     fun setDarkMode(forceDark: Boolean) {
-        sharedPrefs.edit().putBoolean("force_dark_mode", forceDark).apply()
+        sharedPrefs.edit { putBoolean("force_dark_mode", forceDark) }
 
         // Se você quiser alinhar com o AppCompatDelegate, use:
         if (forceDark) {

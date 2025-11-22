@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import com.example.riomarappnav.databinding.ActivityHelpBinding
 import com.example.riomarappnav.utils.BaseActivity
 
@@ -65,7 +64,7 @@ class HelpActivity : BaseActivity() {
 
         try {
             startActivity(Intent.createChooser(emailIntent, "Enviar formulário via"))
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             Toast.makeText(this, "Não foi possível enviar o e-mail. Verifique seu aplicativo de e-mail.", Toast.LENGTH_SHORT).show()
         }
     }

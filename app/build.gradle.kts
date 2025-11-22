@@ -1,13 +1,13 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
+    id("org.jetbrains.kotlin.plugin.compose")
     alias(libs.plugins.google.gms.google.services)
 }
 
 android {
     namespace = "com.example.riomarappnav"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.riomarappnav"
@@ -46,7 +46,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "2.0.0"
+        kotlinCompilerExtensionVersion = "2.2.21"
     }
 }
 
@@ -116,11 +116,14 @@ dependencies {
     // Datastore
     implementation(libs.androidx.datastore.preferences)
 
-    // TensorFlow Lite
+    // TensorFlow Lite & GPU Support
     implementation(libs.tensorflow.lite)
     implementation(libs.tensorflow.lite.support)
+    // --- ADICIONADO SUPORTE A GPU ---
+    implementation(libs.tensorflow.lite.gpu)
+    implementation(libs.tensorflow.lite.gpu.delegate.plugin)
+    // -------------------------------
 
     // GPS
-
-    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation(libs.play.services.location)
 }

@@ -16,6 +16,7 @@ import com.example.riomarappnav.R
 class OverlayView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private var boundingBoxes: List<BoundingBox> = emptyList()
+    private val textBounds = Rect()
 
     // Configuração dos Paints
     private val boxPaint = Paint().apply {
@@ -48,7 +49,6 @@ class OverlayView(context: Context, attrs: AttributeSet) : View(context, attrs) 
 
             // Prepara e desenha o fundo e o texto do rótulo
             val label = box.clsName
-            val textBounds = Rect()
             textPaint.getTextBounds(label, 0, label.length, textBounds)
             canvas.drawRect(
                 left,

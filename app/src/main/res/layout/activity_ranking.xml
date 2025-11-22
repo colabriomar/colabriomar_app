@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Ranking de Usuários"
+        android:text="@string/ranking_de_usu_rios"
         android:textColor="@color/laranja"
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"

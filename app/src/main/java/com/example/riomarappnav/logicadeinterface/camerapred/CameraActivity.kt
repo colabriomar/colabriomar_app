@@ -14,7 +14,6 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
@@ -47,7 +46,7 @@ import com.google.firebase.firestore.GeoPoint
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-@Suppress("DEPRECATION")
+
 class CameraActivity : BaseActivity(), Detector.DetectorListener {
 
     private lateinit var binding: ActivityCameraBinding

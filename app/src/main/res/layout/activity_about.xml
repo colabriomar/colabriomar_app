@@ -26,7 +26,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:padding="16dp"
-        android:text="Projeto Riomar: os alunos do IFAM contribuem para o monitoramento do lixo, promovendo a sustentabilidade e a preservação ambiental."
+        android:text="@string/projeto_riomar_os_alunos_do_ifam_contribuem_para_o_monitoramento_do_lixo_promovendo_a_sustentabilidade_e_a_preserva_o_ambiental"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 

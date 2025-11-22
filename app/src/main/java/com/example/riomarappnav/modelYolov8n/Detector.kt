@@ -15,6 +15,7 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
+import androidx.core.graphics.scale
 
 /**
  * A classe detector escapsula a lógica de carregamento do modelo, inferencia e pos-processamento.
@@ -89,7 +90,7 @@ class Detector(
 
         var inferenceTime = SystemClock.uptimeMillis() //retorna o tempo de processamento (inferencia em ms)
 
-        val resizedBitmap = Bitmap.createScaledBitmap(frame, tensorWidth, tensorHeight, false) //redimensiona a imagem para o padrao da entrada do modelo. Sem usar filtros.
+        val resizedBitmap = frame.scale(tensorWidth, tensorHeight, false) //redimensiona a imagem para o padrao da entrada do modelo. Sem usar filtros.
 
         val tensorImage = TensorImage(DataType.FLOAT32) //cria um objeto que suporta o formato de float32 o tipo esperado pelo modelo
         tensorImage.load(resizedBitmap) //carrega a imagem redimensionada
@@ -144,10 +145,10 @@ class Detector(
                 val y1 = cy - (h/2F)
                 val x2 = cx + (w/2F)
                 val y2 = cy + (h/2F)
-                if (x1 < 0F || x1 > 1F) continue
-                if (y1 < 0F || y1 > 1F) continue
-                if (x2 < 0F || x2 > 1F) continue
-                if (y2 < 0F || y2 > 1F) continue
+                if (x1 !in 0F..1F) continue
+                if (y1 !in 0F..1F) continue
+                if (x2 !in 0F..1F) continue
+                if (y2 !in 0F..1F) continue
 
                 //faz o calculo do limite da caixa a ser desenhada
                 boundingBoxes.add(
