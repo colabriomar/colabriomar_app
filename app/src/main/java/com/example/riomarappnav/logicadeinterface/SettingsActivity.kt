@@ -33,7 +33,6 @@ class SettingsActivity : AppCompatActivity() {
         return sharedPreferences.getString("usuario_nome", null)
     }
 
-    // Função auxiliar para lidar com a depreciação do overridePendingTransition
     private fun compatOverridePendingTransition(enterAnim: Int, exitAnim: Int) {
         if (Build.VERSION.SDK_INT >= 34) {
             overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, enterAnim, exitAnim)
@@ -62,12 +61,8 @@ class SettingsActivity : AppCompatActivity() {
         // Referências das views
         val darkModeSwitch = findViewById<Switch>(R.id.switchDarkMode)
         tvWelcome = findViewById(R.id.tvWelcome)
-
-        // Correção: Uso de String Resource com placeholder para evitar concatenação direta
         val nomeLocal = recuperarNomeLocal() ?: "usuário"
         tvWelcome.text = getString(R.string.welcome_user, nomeLocal)
-
-        // Removido: Lógica do Glide e findViewById(R.id.ivProfilePicture)
 
         // Atualiza o nome do usuário do Firestore (se houver mudança remota)
         firestoreRepository.buscarNomeUsuario { nome ->

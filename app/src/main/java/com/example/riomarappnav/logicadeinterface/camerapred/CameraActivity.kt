@@ -8,6 +8,7 @@ import android.graphics.Matrix
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageButton
@@ -65,6 +66,8 @@ class CameraActivity : BaseActivity(), Detector.DetectorListener {
 
     // Flag para indicar se a Activity está ativa (para evitar processamento em background)
     private var isActive: Boolean = true
+    private val captureCooldownMs = 3000L
+    private var lastCaptureAt = 0L
 
     @SuppressLint("MissingPermission", "NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -168,7 +171,25 @@ class CameraActivity : BaseActivity(), Detector.DetectorListener {
         )
 
         cameraButton.setOnClickListener {
+            val now = SystemClock.elapsedRealtime()
+            val elapsed = now - lastCaptureAt
+            if (elapsed < captureCooldownMs) {
+                val remainingSeconds = ((captureCooldownMs - elapsed) / 1000L) + 1L
+                Toast.makeText(
+                    this,
+                    "Aguarde ${remainingSeconds}s para registrar novamente.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+            if (!::lati.isInitialized || !::longi.isInitialized) {
+                botaoTirarFotoQueDisparaOEnvioDoFormProFirebase()
+                return@setOnClickListener
+            }
             botaoTirarFotoQueDisparaOEnvioDoFormProFirebase()
+            lastCaptureAt = now
+            cameraButton.isEnabled = false
+            cameraButton.postDelayed({ cameraButton.isEnabled = true }, captureCooldownMs)
         }
     }
 
@@ -202,7 +223,11 @@ class CameraActivity : BaseActivity(), Detector.DetectorListener {
                 .build()
                 .also { it.surfaceProvider = previewView.surfaceProvider }
 
+            // --- MODIFICAÇÃO DE OTIMIZAÇÃO AQUI ---
             val imageAnalysis = ImageAnalysis.Builder()
+                // Limitamos a resolução para 640x640 (próximo do YOLOv8n).
+                // Isso reduz drasticamente a carga na CPU/GPU antes da inferência.
+                .setTargetResolution(android.util.Size(640, 640))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
 
@@ -229,9 +254,12 @@ class CameraActivity : BaseActivity(), Detector.DetectorListener {
             imageProxy.close()
             return
         }
-        // Converte o ImageProxy para Bitmap (certifique-se que a função de extensão lida com erros internos)
+        // Converte o ImageProxy para Bitmap
         val bitmap = imageProxy.toBitmap()
+
         // Cria um Bitmap rotacionado de acordo com a rotação da imagem
+        // Como agora a imagem de entrada é menor (devido ao setTargetResolution),
+        // esta operação é muito mais rápida.
         val rotatedBitmap = Bitmap.createBitmap(
             bitmap, 0, 0, bitmap.width, bitmap.height,
             imageProxy.imageInfo.rotationDegrees.toMatrix(), true
@@ -242,9 +270,7 @@ class CameraActivity : BaseActivity(), Detector.DetectorListener {
         } catch (e: Exception) {
             Log.e("CameraActivity", "Erro ao processar a imagem: ${e.message}")
         } finally {
-            // Gerenciamento de memória:
-            // Se você encontrar problemas com bitmap.recycle() (por exemplo, se o bitmap estiver em uso por operações assíncronas),
-            // considere remover a chamada e deixar o garbage collector liberar a memória.
+            // Gerenciamento de memória
             if (!bitmap.isRecycled) {
                 bitmap.recycle()
             }

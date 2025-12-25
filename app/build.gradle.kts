@@ -49,6 +49,10 @@ android {
         kotlinCompilerExtensionVersion = "2.2.21"
     }
 }
+tasks.register("testClasses") {
+    // Compatibility with tools expecting the Java plugin task.
+    dependsOn("testDebugUnitTest")
+}
 
 dependencies {
     // Material Design

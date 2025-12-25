@@ -1,15 +1,9 @@
 package com.example.riomarappnav.database
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.net.Uri
-import android.provider.MediaStore
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
-import com.google.firebase.storage.FirebaseStorage
-import java.io.ByteArrayOutputStream
 
 class FirestoreRepository {
 
@@ -146,89 +140,6 @@ class FirestoreRepository {
             .addOnFailureListener {
                 onResult(null) // Retorna nulo em caso de erro
             }
-    }
-
-    /**
-     * Atualiza a imagem de perfil do usuário no Firestore.
-     * @param imageUrl URL da imagem de perfil.
-     * @param onResult Callback que retorna sucesso (true) ou falha (false) da operação.
-     */
-    private fun atualizarImagemUsuario(imageUrl: String, onResult: (Boolean) -> Unit) {
-        val userId = getCurrentUserId()
-        if (userId == null) {
-            onResult(false)
-            return
-        }
-
-        val userRef = db.collection("trofeusUsuario").document(userId)
-        val updates = mapOf("profileImageUrl" to imageUrl)
-        userRef.update(updates)
-            .addOnSuccessListener { onResult(true) }
-            .addOnFailureListener { onResult(false) }
-    }
-
-    /**
-     * Busca a URL da imagem de perfil do usuário no Firestore.
-     * Se o usuário não tiver uma imagem cadastrada, retorna uma URL padrão.
-     * @param onResult Callback que retorna a URL da imagem.
-     */
-    fun buscarImagemUsuario(onResult: (String) -> Unit) {
-        val defaultImageUrl = "https://as2.ftcdn.net/v2/jpg/05/60/44/93/1000_F_560449312_I6FTJ1HWythaLutWDMuHvJy2IoCv20iJ.jpg"
-        val userId = getCurrentUserId()
-        if (userId == null) {
-            onResult(defaultImageUrl)
-            return
-        }
-
-        val userRef = db.collection("trofeusUsuario").document(userId)
-        userRef.get()
-            .addOnSuccessListener { document ->
-                val url = document.getString("profileImageUrl")
-                if (!url.isNullOrEmpty()) {
-                    onResult(url)
-                } else {
-                    onResult(defaultImageUrl)
-                }
-            }
-            .addOnFailureListener {
-                onResult(defaultImageUrl)
-            }
-    }
-
-    fun uploadProfileImage(uri: Uri, context: Context, onResult: (Boolean) -> Unit) {
-        val userId = getCurrentUserId()
-        if (userId == null) {
-            onResult(false)
-            return
-        }
-
-        try {
-            // Obtém o bitmap da imagem a partir do URI
-            val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-            // Redimensiona a imagem para 200x200 pixels
-            val resizedBitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true)
-            // Comprime a imagem em JPEG (qualidade 80%)
-            val baos = ByteArrayOutputStream()
-            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos)
-            val imageData = baos.toByteArray()
-
-            // Define a referência de armazenamento no Firebase Storage
-            val storageRef = FirebaseStorage.getInstance().reference.child("profileImages/$userId.jpg")
-            storageRef.putBytes(imageData)
-                .addOnSuccessListener {
-                    // Após o upload, recupera a URL de download
-                    storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                        atualizarImagemUsuario(downloadUri.toString()) { success ->
-                            onResult(success)
-                        }
-                    }
-                }
-                .addOnFailureListener {
-                    onResult(false)
-                }
-        } catch (e: Exception) {
-            onResult(false)
-        }
     }
 
     fun fetchUserData(onResult: (List<UserData>) -> Unit) {

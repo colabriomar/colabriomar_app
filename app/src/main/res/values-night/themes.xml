@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Estilo base (modo escuro) -->
-    <style name="Base.Theme.RioMarAppNav.Dark" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="Base.Theme.RioMarAppNav.Dark" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Você PODE usar outro parent, como Theme.MaterialComponents if you like -->
         <item name="colorPrimary">@color/container_dark_night_gray</item>
         <item name="android:statusBarColor">?attr/colorPrimary</item>

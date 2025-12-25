@@ -5,6 +5,7 @@ import android.widget.Toast
 import com.example.riomarappnav.database.FirestoreRepository
 import com.example.riomarappnav.databinding.ActivityEditInfoBinding
 import com.example.riomarappnav.utils.BaseActivity
+import androidx.core.content.edit
 
 class EditInfoActivity : BaseActivity() {
 
@@ -45,6 +46,6 @@ class EditInfoActivity : BaseActivity() {
     // Salva o nome localmente (caso seja necessário)
     private fun saveUserInfoLocally(name: String) {
         val sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
-        sharedPref.edit().putString("userName", name).apply()
+        sharedPref.edit { putString("userName", name) }
     }
 }

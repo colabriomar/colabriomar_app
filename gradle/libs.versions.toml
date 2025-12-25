@@ -1,6 +1,6 @@
 [versions]
 activityComposeVersion = "1.7.2"
-agp = "8.13.1"
+agp = "8.13.2"
 androidxJunit = "1.1.5"
 appcompatVersion = "1.7.0"
 cameraLifecycleVersion = "1.2.0"
