@@ -13,6 +13,7 @@ import org.tensorflow.lite.support.common.ops.CastOp
 import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.image.ops.Rot90Op
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.BufferedReader
@@ -40,7 +41,10 @@ class Detector(
     private var numElements = 0
 
     // O ImageProcessor será inicializado no setup() após descobrirmos o tamanho do modelo
-    private lateinit var imageProcessor: ImageProcessor
+    private var imageProcessor: ImageProcessor? = null
+    private var currentRotation = -1
+    private val inputTensorImage = TensorImage(INPUT_IMAGE_TYPE)
+    private lateinit var outputTensorBuffer: TensorBuffer
 
     fun setup() {
         val model = FileUtil.loadMappedFile(context, modelPath)
@@ -49,11 +53,11 @@ class Detector(
         // --- OTIMIZAÇÃO 1: GPU DELEGATE ---
         val compatibilityList = CompatibilityList()
         if (compatibilityList.isDelegateSupportedOnThisDevice) {
-            val delegateOptions = compatibilityList.bestOptionsForThisDevice
-            gpuDelegate = GpuDelegate(delegateOptions)
+            gpuDelegate = GpuDelegate()
             options.addDelegate(gpuDelegate)
             Log.d("Detector", "GPU Delegate ativado com sucesso.")
         } else {
+            options.setUseXNNPACK(true)
             options.numThreads = 4
             Log.d("Detector", "GPU não suportada. Usando 4 threads de CPU.")
         }
@@ -71,11 +75,11 @@ class Detector(
         numElements = outputShape[2]
 
         // --- OTIMIZAÇÃO 2: ImageProcessor com Resize nativo ---
-        imageProcessor = ImageProcessor.Builder()
-            .add(ResizeOp(tensorHeight, tensorWidth, ResizeOp.ResizeMethod.BILINEAR)) // Redimensiona aqui
-            .add(NormalizeOp(INPUT_MEAN, INPUT_STANDARD_DEVIATION))
-            .add(CastOp(INPUT_IMAGE_TYPE))
-            .build()
+        outputTensorBuffer = TensorBuffer.createFixedSize(
+            intArrayOf(1, numChannel, numElements),
+            OUTPUT_IMAGE_TYPE
+        )
+        getImageProcessor(0)
 
         try {
             val inputStream: InputStream = context.assets.open(labelPath)
@@ -92,31 +96,48 @@ class Detector(
         }
     }
 
+    private fun getImageProcessor(rotationDegrees: Int): ImageProcessor {
+        val rotations = ((rotationDegrees / 90) % 4 + 4) % 4
+        if (imageProcessor == null || currentRotation != rotations) {
+            val builder = ImageProcessor.Builder()
+            if (rotations != 0) {
+                builder.add(Rot90Op(rotations))
+            }
+            builder.add(ResizeOp(tensorHeight, tensorWidth, ResizeOp.ResizeMethod.BILINEAR))
+                .add(NormalizeOp(INPUT_MEAN, INPUT_STANDARD_DEVIATION))
+                .add(CastOp(INPUT_IMAGE_TYPE))
+            imageProcessor = builder.build()
+            currentRotation = rotations
+        }
+        return imageProcessor!!
+    }
+
     fun clear() {
         interpreter?.close()
         interpreter = null
         gpuDelegate?.close()
         gpuDelegate = null
+        imageProcessor = null
+        currentRotation = -1
     }
 
-    fun detect(frame: Bitmap) {
+    fun detect(frame: Bitmap, rotationDegrees: Int) {
         interpreter ?: return
         if (tensorWidth == 0 || tensorHeight == 0 || numChannel == 0 || numElements == 0) return
+        if (!::outputTensorBuffer.isInitialized) return
 
         var inferenceTime = SystemClock.uptimeMillis()
 
         // Carrega o bitmap original. O ImageProcessor fará o Resize automaticamente.
-        val tensorImage = TensorImage(DataType.FLOAT32)
-        tensorImage.load(frame)
-
-        val processedImage = imageProcessor.process(tensorImage)
+        inputTensorImage.load(frame)
+        val processedImage = getImageProcessor(rotationDegrees).process(inputTensorImage)
         val imageBuffer = processedImage.buffer
 
-        val output = TensorBuffer.createFixedSize(intArrayOf(1, numChannel, numElements), OUTPUT_IMAGE_TYPE)
+        val outputBuffer = outputTensorBuffer.buffer
+        outputBuffer.rewind()
+        interpreter?.run(imageBuffer, outputBuffer)
 
-        interpreter?.run(imageBuffer, output.buffer)
-
-        val bestBoxes = bestBox(output.floatArray)
+        val bestBoxes = bestBox(outputTensorBuffer.floatArray)
         inferenceTime = SystemClock.uptimeMillis() - inferenceTime
 
         if (bestBoxes == null || bestBoxes.isEmpty()) {

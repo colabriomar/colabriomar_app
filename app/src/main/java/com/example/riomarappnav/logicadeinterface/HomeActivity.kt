@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.riomarappnav.R
 import com.example.riomarappnav.logicadeinterface.camerapred.CameraActivity
+import com.example.riomarappnav.logicadeinterface.telaMapa.MapaActivity
 import com.example.riomarappnav.logicadeinterface.telaRanking.RankingActivity
 import com.example.riomarappnav.utils.BaseActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -42,6 +43,12 @@ class HomeActivity : BaseActivity() {
                 R.id.bottom_home -> true
                 R.id.bottom_search -> {
                     startActivity(Intent(this, CameraActivity::class.java))
+                    compatOverridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    finish()
+                    true
+                }
+                R.id.bottom_map -> {
+                    startActivity(Intent(this, MapaActivity::class.java))
                     compatOverridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     finish()
                     true

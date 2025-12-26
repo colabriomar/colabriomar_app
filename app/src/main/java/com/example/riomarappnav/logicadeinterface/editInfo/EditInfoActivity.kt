@@ -45,7 +45,7 @@ class EditInfoActivity : BaseActivity() {
 
     // Salva o nome localmente (caso seja necessário)
     private fun saveUserInfoLocally(name: String) {
-        val sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
-        sharedPref.edit { putString("userName", name) }
+        val sharedPref = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        sharedPref.edit { putString("usuario_nome", name) }
     }
 }

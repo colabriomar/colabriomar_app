@@ -34,19 +34,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        }
     }
 
     buildFeatures {
         viewBinding = true
         compose = true
         buildConfig = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "2.2.21"
     }
 }
 tasks.register("testClasses") {
@@ -55,9 +52,6 @@ tasks.register("testClasses") {
 }
 
 dependencies {
-    // Material Design
-    implementation(libs.material.v190)
-
     // Glide
     implementation(libs.glide)
     implementation(libs.androidx.activity)
@@ -80,6 +74,7 @@ dependencies {
 
     // Google Play services library
     implementation(libs.play.services.auth)
+    implementation(libs.osmdroid.android)
 
     // AndroidX Libraries
     implementation(libs.androidx.core.ktx.v1120)
@@ -123,9 +118,7 @@ dependencies {
     // TensorFlow Lite & GPU Support
     implementation(libs.tensorflow.lite)
     implementation(libs.tensorflow.lite.support)
-    // --- ADICIONADO SUPORTE A GPU ---
     implementation(libs.tensorflow.lite.gpu)
-    implementation(libs.tensorflow.lite.gpu.delegate.plugin)
     // -------------------------------
 
     // GPS

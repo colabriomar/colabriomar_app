@@ -14,7 +14,7 @@
     <color name="bounding_box_color">#4D88B6</color>
 
     <!--Tema Claro-->
-    <color name="background_light_white">#FFE9B7</color>
+    <color name="background_light_white">#EEC38B</color>
     <color name="container_light_gray">#6A4795</color>
     <color name="item_selector_light_gray">#93DCFF</color>
 

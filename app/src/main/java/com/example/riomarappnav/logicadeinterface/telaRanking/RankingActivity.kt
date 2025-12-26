@@ -12,6 +12,7 @@ import com.example.riomarappnav.database.FirestoreRepository
 import com.example.riomarappnav.logicadeinterface.HomeActivity
 import com.example.riomarappnav.logicadeinterface.SettingsActivity
 import com.example.riomarappnav.logicadeinterface.camerapred.CameraActivity
+import com.example.riomarappnav.logicadeinterface.telaMapa.MapaActivity
 import com.example.riomarappnav.utils.BaseActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -56,6 +57,18 @@ class RankingActivity : BaseActivity() {
                         Intent(
                             applicationContext,
                             CameraActivity::class.java
+                        )
+                    )
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    finish()
+                    return@setOnItemSelectedListener true
+                }
+
+                R.id.bottom_map -> {
+                    startActivity(
+                        Intent(
+                            applicationContext,
+                            MapaActivity::class.java
                         )
                     )
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)

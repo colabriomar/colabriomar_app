@@ -1,5 +1,6 @@
 package com.example.riomarappnav.database
 
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -9,6 +10,9 @@ class FirestoreRepository {
 
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
+    private companion object {
+        private const val TAG = "FirestoreRepository"
+    }
 
     // Obtém o ID do usuário autenticado
     private fun getCurrentUserId(): String? {
@@ -65,7 +69,8 @@ class FirestoreRepository {
             .addOnSuccessListener { document ->
                 onResult(document.exists()) // Retorna true se o documento existir
             }
-            .addOnFailureListener {
+            .addOnFailureListener { error ->
+                Log.e(TAG, "Falha ao verificar documento do usuario", error)
                 onResult(false) // Retorna falso em caso de falha ao verificar
             }
     }
@@ -108,7 +113,19 @@ class FirestoreRepository {
 
         val trofeusRef = db.collection("trofeusUsuario").document(userId)
 
-        trofeusRef.update("nomeUser", novoNome)
+        db.runTransaction { transaction ->
+            val snapshot = transaction.get(trofeusRef)
+            if (snapshot.exists()) {
+                transaction.update(trofeusRef, "nomeUser", novoNome)
+            } else {
+                val novoDocumento = mapOf(
+                    "userId" to userId,
+                    "nomeUser" to novoNome,
+                    "trofeus" to 0
+                )
+                transaction.set(trofeusRef, novoDocumento)
+            }
+        }
             .addOnSuccessListener {
                 onResult(true) // Sucesso na atualização
             }
@@ -137,7 +154,8 @@ class FirestoreRepository {
                     onResult(null) // Retorna nulo se o documento não existir
                 }
             }
-            .addOnFailureListener {
+            .addOnFailureListener { error ->
+                Log.e(TAG, "Falha ao buscar nome do usuario", error)
                 onResult(null) // Retorna nulo em caso de erro
             }
     }
@@ -158,9 +176,36 @@ class FirestoreRepository {
                 }
                 onResult(userList)
             }
-            .addOnFailureListener {
+            .addOnFailureListener { error ->
+                Log.e(TAG, "Falha ao buscar ranking", error)
                 onResult(emptyList())
             }
     }
+
+    fun fetchPontosDeInteresse(onResult: (List<PontoDeInteresse>) -> Unit) {
+        db.collection("pontosDeInteresse")
+            .limit(100)
+            .get()
+            .addOnSuccessListener { result ->
+                val pontos = mutableListOf<PontoDeInteresse>()
+                for (document in result) {
+                    val localizacao = document.getGeoPoint("localizacao") ?: continue
+                    val predicoesRaw = document.get("predicoes") as? List<*>
+                    val predicoes = predicoesRaw
+                        ?.mapNotNull { it as? String }
+                        ?.map { it.trim() }
+                        ?.filter { it.isNotEmpty() }
+                        ?: emptyList()
+                    pontos.add(PontoDeInteresse(localizacao, predicoes))
+                }
+                onResult(pontos)
+            }
+            .addOnFailureListener { error ->
+                Log.e(TAG, "Falha ao buscar pontos de interesse", error)
+                onResult(emptyList())
+            }
+    }
+
     data class UserData(val name: String, val trophies: Int, val profileImageUrl: String)
+    data class PontoDeInteresse(val localizacao: GeoPoint, val predicoes: List<String>)
 }
